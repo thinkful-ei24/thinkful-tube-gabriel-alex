@@ -3,12 +3,17 @@ console.log('VideoList ran');
 const VideoList = (function() {
   const generateListItem = function(video) {
     console.log('generating list items');
-    const youtubeURL = 'https://www.youtube.com/watch?v=';
+    const youtubeVideoURL = 'https://www.youtube.com/watch?v=';
+    const youtubeChannelURL = 'https://www.youtube.com/channel/';
+    console.log(video);
     return `
     <li>
       <img src='${video.thumbnail}'>
       Title: ${video.title}
-      Link: <a href="${youtubeURL}${video.id}">Link</a>
+      - <a href="${youtubeVideoURL}${video.id}">Link</a>
+      Channel: <a href='${youtubeChannelURL}${video.channelID}'>${
+    video.channelTitle
+  }</a>
     </li>
     `;
   };
@@ -17,7 +22,6 @@ const VideoList = (function() {
     $('.results').html(html.join(''));
   };
   const handleFormSubmit = function() {
-    console.log('handling form submit');
     $('#js-search-form').submit(event => {
       event.preventDefault();
       const searchField = $('#search-term');
@@ -29,7 +33,9 @@ const VideoList = (function() {
           return {
             id: item.id.videoId,
             thumbnail: item.snippet.thumbnails.default.url,
-            title: item.snippet.title
+            title: item.snippet.title,
+            channelID: item.snippet.channelId,
+            channelTitle: item.snippet.channelTitle
           };
         });
         Store.setVideos(decoratedArray);

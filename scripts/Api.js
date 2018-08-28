@@ -16,14 +16,3 @@ const Api = (function() {
   };
   return { fetchVideos };
 })();
-
-// Api.fetchVideos('test', function(response) {
-//   const decoratedArray = response.items.map(item => {
-//     return {
-//       id: item.id.videoId,
-//       thumbnail: item.snippet.thumbnails.default,
-//       title: item.snippet.title
-//     };
-//   });
-//   Store.setVideos(decoratedArray);
-// });
