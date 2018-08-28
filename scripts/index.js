@@ -138,6 +138,8 @@ const handleFormSubmit = function() {
     const searchTerm = $('#search-term').val();
     $('#search-term').val('');
     fetchVideos(searchTerm, function(data) {
+      console.log(data);
+
       const decoratedResponse = decorateResponse(data);
       addVideosToStore(decoratedResponse);
       render();
