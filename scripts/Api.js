@@ -7,11 +7,6 @@ const Api = (function() {
   const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 
   const fetchVideos = function(searchTerm, query, callback) {
-    // const query = {
-    //   part: 'snippet',
-    //   q: searchTerm,
-    //   key: API_KEY
-    // };
     $.getJSON(BASE_URL, query, callback);
   };
   return { fetchVideos, API_KEY };

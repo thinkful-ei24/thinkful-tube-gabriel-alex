@@ -1,13 +1,26 @@
 console.log('Store ran');
 const Store = (function() {
-  const videos = [];
+  // const videos = [];
+
+  const results = {
+    videos: [],
+    previousPageToken: '',
+    nextPageToken: ''
+  };
 
   const setVideos = function(videos) {
-    this.videos = [];
+    console.log('this is this');
+    console.log(this);
+    this.results.videos = [];
     videos.forEach(video => {
-      this.videos.push(video);
+      this.results.videos.push(video);
     });
   };
 
-  return { videos, setVideos };
+  const setPageTokens = function(prevToken = '', nextToken = '') {
+    this.results.previousPageToken = prevToken;
+    this.results.nextPageToken = nextToken;
+  };
+
+  return { results, setVideos, setPageTokens };
 })();
