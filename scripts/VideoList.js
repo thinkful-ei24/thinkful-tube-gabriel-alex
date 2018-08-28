@@ -8,7 +8,9 @@ const VideoList = (function() {
     console.log(video);
     return `
     <li>
-      <img src='${video.thumbnail}'>
+      <a href='${youtubeVideoURL}${video.id}' data-lity><img src='${
+    video.thumbnail
+  }'></a>
       Title: ${video.title}
       - <a href="${youtubeVideoURL}${video.id}">Link</a>
       Channel: <a href='${youtubeChannelURL}${video.channelID}'>${
