@@ -10,8 +10,10 @@ const VideoList = (function() {
       <a href='${youtubeVideoURL}${video.id}' data-lity><img src='${
     video.thumbnail
   }'></a>
-      Title: ${video.title}
-      - <a href="${youtubeVideoURL}${video.id}">Link</a>
+      <span class="title"> ${video.title}</span>
+       <span class="link"> <a href="${youtubeVideoURL}${
+    video.id
+  }">Link</a></span>
       Channel: <a href='${youtubeChannelURL}${video.channelID}'>${
     video.channelTitle
   }</a>
@@ -33,7 +35,8 @@ const VideoList = (function() {
       const query = {
         part: 'snippet',
         q: searchTerm,
-        key: Api.API_KEY
+        key: Api.API_KEY,
+        type: 'video'
       };
       Api.fetchVideos(searchTerm, query, function(response) {
         Store.setVideos(decorateItemsArray(response));
@@ -54,7 +57,8 @@ const VideoList = (function() {
         part: 'snippet',
         q: searchTerm,
         key: Api.API_KEY,
-        pageToken: Store.results.nextPageToken
+        pageToken: Store.results.nextPageToken,
+        type: 'video'
       };
 
       Api.fetchVideos(searchTerm, query, function(response) {
@@ -73,7 +77,8 @@ const VideoList = (function() {
         part: 'snippet',
         q: searchTerm,
         key: Api.API_KEY,
-        pageToken: Store.results.prevPageToken
+        pageToken: Store.results.prevPageToken,
+        type: 'video'
       };
 
       Api.fetchVideos(searchTerm, query, function(response) {

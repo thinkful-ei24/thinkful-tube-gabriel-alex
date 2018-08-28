@@ -7,19 +7,26 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="styles/index.css">
     <link src="https://cdnjs.cloudflare.com/ajax/libs/lity/2.3.1/lity.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+
+
 
     <title>Youtube Api</title>
 </head>
 
 <body>
-    <h1>Youtube Api</h1>
-    <form id='js-search-form'>
-        <input type="text" id="search-term" />
-        <input type="submit" value="Go" />
-    </form>
+    <div class="centered form">
+        <h1>Youtube Api</h1>
+        <form id='js-search-form'>
+            <input type="text" id="search-term" />
+            <input type="submit" value="Go" />
+        </form>
+    </div>
     <ul class='results'></ul>
-    <input type="button" id="previous" value="previous">
-    <input type="button" id="next" value="next">
+    <div class="centered page-btn">
+        <input type="button" id="previous" value="previous">
+        <input type="button" id="next" value="next">
+    </div>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
