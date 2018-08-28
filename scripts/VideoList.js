@@ -28,16 +28,23 @@ const VideoList = (function() {
       event.preventDefault();
       const searchField = $('#search-term');
       const searchTerm = searchField.val();
-      searchField.val('');
+      // searchField.val('');
+      const query = {
+        part: 'snippet',
+        q: searchTerm,
+        key: Api.API_KEY
+      };
+      Api.fetchVideos(searchTerm, query, function(response) {
+        console.log(response);
 
-      Api.fetchVideos(searchTerm, function(response) {
         const decoratedArray = response.items.map(item => {
           return {
             id: item.id.videoId,
             thumbnail: item.snippet.thumbnails.default.url,
             title: item.snippet.title,
             channelID: item.snippet.channelId,
-            channelTitle: item.snippet.channelTitle
+            channelTitle: item.snippet.channelTitle,
+            nextPage: response.nextPageToken
           };
         });
         Store.setVideos(decoratedArray);
@@ -46,8 +53,29 @@ const VideoList = (function() {
     });
   };
 
+  const bindNextButtonListener = function() {
+    $('#next').on('click', function(event) {
+      console.log('next button clicked');
+      const searchField = $('#search-term');
+      const searchTerm = searchField.val();
+      const query = {
+        part: 'snippet',
+        q: searchTerm,
+        key: Api.API_KEY,
+        nextPage: Store.videos[0].nextPage
+      };
+      console.log(query);
+      console.log(Store.videos);
+
+      Api.fetchVideos(searchTerm, query, function(response) {
+        console.log(response);
+      });
+    });
+  };
+
   const bindEventListeners = function() {
     console.log('binding event listener');
+    bindNextButtonListener();
     handleFormSubmit();
   };
   return { render, bindEventListeners };
