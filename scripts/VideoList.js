@@ -1,10 +1,14 @@
 /* global Store, Api */
-console.log('VideoList ran');
+
+// VideoList module
 const VideoList = (function() {
+  // Function for generating HTML for a given video object
   const generateListItem = function(video) {
+    // URL definitions
     const youtubeVideoURL = 'https://www.youtube.com/watch?v=';
     const youtubeChannelURL = 'https://www.youtube.com/channel/';
 
+    // Return generated HTML
     return `
     <li>
       <a href='${youtubeVideoURL}${video.id}' data-lity><img src='${
@@ -21,35 +25,37 @@ const VideoList = (function() {
     `;
   };
 
+  // Function for rendering page
   const render = function() {
     const html = Store.results.videos.map(video => generateListItem(video));
+    // Update the button disabled status based on presence of page tokens in store
     updateButtonDisabledStatus();
     $('.results').html(html.join(''));
   };
 
+  // Fucntion for creating event listener on form
   const handleFormSubmit = function() {
     $('#js-search-form').submit(event => {
       event.preventDefault();
       const searchTerm = getSearchTerm('#search-term');
-      // searchField.val('');
+      // Create query for search
       const query = {
         part: 'snippet',
         q: searchTerm,
         key: Api.API_KEY,
         type: 'video'
       };
-      Api.fetchVideos(searchTerm, query, function(response) {
-        Store.setVideos(decorateItemsArray(response));
-        render();
-      });
+      setVideosAndRender(query);
     });
   };
 
+  // Function for getting search term from search field
   const getSearchTerm = function(cssClass) {
     const searchField = $(cssClass);
     return searchField.val();
   };
 
+  // Function for binding next button listener
   const bindNextButtonListener = function() {
     $('#next').on('click', function() {
       const searchTerm = getSearchTerm('#search-term');
@@ -61,13 +67,12 @@ const VideoList = (function() {
         type: 'video'
       };
 
-      Api.fetchVideos(searchTerm, query, function(response) {
-        Store.setVideos(decorateItemsArray(response));
-        render();
-      });
+      // Call fetch videos
+      setVideosAndRender(query);
     });
   };
 
+  // Function for binding previous button listener
   const bindPreviousButtonListener = function() {
     $('#previous').on('click', function() {
       console.log('previous button clicked');
@@ -80,14 +85,19 @@ const VideoList = (function() {
         pageToken: Store.results.prevPageToken,
         type: 'video'
       };
-
-      Api.fetchVideos(searchTerm, query, function(response) {
-        Store.setVideos(decorateItemsArray(response));
-        render();
-      });
+      setVideosAndRender(query);
     });
   };
 
+  // Function for calling fetchvideos and setting the store
+  const setVideosAndRender = function(query) {
+    Api.fetchVideos(query, function(response) {
+      Store.setVideos(decorateItemsArray(response));
+      render();
+    });
+  };
+
+  // Function for producing a decorated array of objects
   const decorateItemsArray = function(response) {
     Store.setPageTokens(response.prevPageToken, response.nextPageToken);
 
@@ -103,6 +113,7 @@ const VideoList = (function() {
     });
   };
 
+  // Update the disabled status of the previous and next buttons
   const updateButtonDisabledStatus = function() {
     if (Store.results.nextPageToken) {
       $('#next').prop('disabled', false);
